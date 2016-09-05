@@ -1,8 +1,9 @@
-﻿using System.Data.Entity;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace FinancialPortal.Models
 {
@@ -16,6 +17,15 @@ namespace FinancialPortal.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int HouseholdId { get; set; }
+
+        public virtual ICollection<Budget> Budgets { get; set; }
+        public virtual ICollection<Household> Households { get; set; }
+        public virtual ICollection<Account> Accounts { get; set; }
+        public virtual ICollection<Transaction> Transactions { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -29,5 +39,13 @@ namespace FinancialPortal.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<Budget> Budgets { get; set; }
+        public DbSet<BudgetItem> BudgetItems { get; set; }
+        public DbSet<Household> Households { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<CategoryHousehold> CategoryHouseholds { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
     }
 }
