@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
+﻿using FinancialPortal.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using FinancialPortal.Models;
+using SendGrid;
+using System;
+using System.Configuration;
+using System.Net.Mail;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace FinancialPortal
 {
@@ -19,6 +18,18 @@ namespace FinancialPortal
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
+            var apiKey = ConfigurationManager.AppSettings["SendGridAPIKey"];
+            var from = ConfigurationManager.AppSettings["ContactEmail"];
+
+            SendGridMessage sendGridMessage = new SendGridMessage();
+            sendGridMessage.AddTo(message.Destination);
+            sendGridMessage.From = new MailAddress(from);
+            sendGridMessage.Subject = message.Subject;
+            sendGridMessage.Html = message.Body;
+
+            var transportWeb = new Web(ConfigurationManager.AppSettings["SendGridAPIKey"]);
+            transportWeb.DeliverAsync(sendGridMessage);
+
             return Task.FromResult(0);
         }
     }

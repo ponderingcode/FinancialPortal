@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FinancialPortal.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace FinancialPortal.Controllers
 {
@@ -63,7 +64,12 @@ namespace FinancialPortal.Controllers
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
 
-            var userId = User.Identity.GetUserId();
+            string userId = User.Identity.GetUserId();
+            UserManager<ApplicationUser> manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            ApplicationUser user = manager.FindById(User.Identity.GetUserId());
+            ViewBag.FirstName = user.FirstName;
+            ViewBag.LastName = user.LastName;
+
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
@@ -245,6 +251,49 @@ namespace FinancialPortal.Controllers
         }
 
         //
+        // GET: /Manage/ChangeProfileInfo
+        public ActionResult ChangeProfileInfo()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Manage/ChangeProfileInfo
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeProfileInfo(ChangeProfileInfoViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            //var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            //var user = await manager.FindByIdAsync(User.Identity.GetUserId());
+            ApplicationUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            if (null != user)
+            {
+                /*** NEEDS REFACTORING ***/
+                // If user left a field blank, use the old value
+                if (null != model.NewFirstName && "" != model.NewFirstName)
+                {
+                    user.FirstName = model.NewFirstName;
+                }
+
+                if (null != model.NewLastName && "" != model.NewLastName)
+                {
+                    user.LastName = model.NewLastName;
+                }
+
+                UserManager.Update(user);
+                return RedirectToAction("Index", new { Message = ManageMessageId.ChangeProfileInfoSuccess });
+            }
+
+            return View(model);
+        }
+
+        //
         // GET: /Manage/SetPassword
         public ActionResult SetPassword()
         {
@@ -377,6 +426,7 @@ namespace FinancialPortal.Controllers
         {
             AddPhoneSuccess,
             ChangePasswordSuccess,
+            ChangeProfileInfoSuccess,
             SetTwoFactorSuccess,
             SetPasswordSuccess,
             RemoveLoginSuccess,
