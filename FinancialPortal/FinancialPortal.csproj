@@ -211,6 +211,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Private.config" />
+    <None Include="Properties\PublishProfiles\rfleming-financialportal - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\rfleming-financialportal - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
