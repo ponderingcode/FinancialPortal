@@ -3,6 +3,8 @@ using System.Data.Entity;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FinancialPortal.Controllers
 {
@@ -57,6 +59,7 @@ namespace FinancialPortal.Controllers
         }
 
         // GET: Households/Edit/5
+        [Authorize(Roles = ApplicationRole.ADMINISTRATOR + ", " + HouseholdRole.HEAD_OF_HOUSEHOLD)]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -68,7 +71,10 @@ namespace FinancialPortal.Controllers
             {
                 return HttpNotFound();
             }
-            return View(household);
+            HouseholdViewModel householdViewModel = new HouseholdViewModel { Id = household.Id, Name = household.Name };
+            householdViewModel.Members = new MultiSelectList(db.Users, Common.ID, Common.USER_NAME);
+            householdViewModel.SelectedMembers = GetAllMemberUserIdsForHousehold(household.Id).ToList();
+            return View(householdViewModel);
         }
 
         // POST: Households/Edit/5
@@ -121,6 +127,16 @@ namespace FinancialPortal.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ICollection<string> GetAllMemberUserIdsForHousehold(int householdId)
+        {
+            return db.Households.Find(householdId).Members.Select(u => u.Id).ToList();
+        }
+
+        public ICollection<string> GetAllInviteeUserIdsForHousehold(int householdId)
+        {
+            return db.Households.Find(householdId).Invitees.Select(u => u.Id).ToList();
         }
     }
 }

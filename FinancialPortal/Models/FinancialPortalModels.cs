@@ -30,11 +30,13 @@ namespace FinancialPortal.Models
         public Household()
         {
             Members = new HashSet<ApplicationUser>();
+            Invitees = new HashSet<ApplicationUser>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
         public virtual ICollection<ApplicationUser> Members { get; set; }
+        public virtual ICollection<ApplicationUser> Invitees { get; set; }
     }
 
     public class Category

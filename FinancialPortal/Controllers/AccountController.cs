@@ -9,7 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FinancialPortal.Models;
-using BugTracker.Helpers;
+using FinancialPortal.Helpers;
 
 namespace FinancialPortal.Controllers
 {
