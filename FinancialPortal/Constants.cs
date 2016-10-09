@@ -23,9 +23,12 @@
         public const string DETAILS = "Details";
         public const string EDIT = "Edit";
         public const string INDEX = "Index";
+        public const string INVITATION_ACCEPTANCE = "InvitationAcceptance";
+        public const string INVITE = "Invite";
         public const string LOGIN = "Login";
         public const string LOGIN_AS_DEMO_ADMINISTRATOR = "LoginAsDemoAdministrator";
         public const string LOG_OFF = "LogOff";
+        public const string SEND_INVITATION = "SendInvitation";
         public const string SET_PASSWORD = "SetPassword";
     }
 
@@ -38,14 +41,18 @@
         public const string ROLES = "Roles";
     }
 
-    class ApplicationRole
+    public static class PartialViewName
+    {
+    }
+
+    public static class ApplicationRole
     {
         public const string ADMINISTRATOR = "Administrator";
         public const string PRIVILEGED_USER = "PrivilegedUser";
         public const string STANDARD_USER = "StandardUser";
     }
 
-    class AccountRole
+    public static class AccountRole
     {
         public const string ACCOUNT_HOLDER = "AccountHolder";
         public const string JOINT_ACCOUNT_HOLDER = "Joint" + ACCOUNT_HOLDER;
@@ -53,13 +60,13 @@
         public const string SIGNATORY = "Signatory";
     }
 
-    class AccountType
+    public static class AccountType
     {
         public const string JOINT_TENANCY = "JointTenancy";
         public const string CONVENIENCE = "Convenience";
     }
 
-    class HouseholdRole
+    public static class HouseholdRole
     {
         public const string HEAD_OF_HOUSEHOLD = "HeadOfHousehold";
         public const string MEMBER = "Member";

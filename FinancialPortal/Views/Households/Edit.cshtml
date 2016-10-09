@@ -1,11 +1,15 @@
 ﻿@model FinancialPortal.Models.HouseholdViewModel
 @using Microsoft.AspNet.Identity
-
 @{
     ViewBag.Title = "Edit Household";
     string userId = User.Identity.GetUserId();
 }
-
+<script src="~/Dependencies/jQuery/jquery-2.2.4.min.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 <div class="row">
     <div class="col-md-12">
         <div class="col-md-3"></div>
@@ -24,19 +28,14 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <h5>Current Members</h5>
+                        <h5>
+                            Members&nbsp;<a href="@Url.Action(ActionName.INVITE, ControllerName.HOUSEHOLDS, new { id = Model.Id })" data-toggle="tooltip" data-placement="right" title="Invite someone to join this household"><i class="fa fa-plus-square" aria-hidden="true"></i></a>
+                        </h5>
                         <div class="col-md-12">
                             @Html.ListBoxFor(model => model.SelectedMembers, Model.Members, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.SelectedMembers, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    @*<div class="form-group">
-                        <h5>People Invited to Join Your Household</h5>
-                        <div class="col-md-12">
-                            @Html.ListBoxFor(model => model.SelectedInvitees, Model.Invitees, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.SelectedInvitees, "", new { @class = "text-danger" })
-                        </div>
-                    </div>*@
                     <div class="form-group">
                         <div class="col-md-12 modal-footer well-footer">
                             <button type="submit" class="btn btn-success">Save</button>

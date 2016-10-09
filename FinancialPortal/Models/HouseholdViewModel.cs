@@ -8,8 +8,6 @@ namespace FinancialPortal.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public MultiSelectList Members { get; set; }
-        public MultiSelectList Invitees { get; set; }
         public List<string> SelectedMembers { get; set; }
-        public List<string> SelectedInvitees { get; set; }
     }
 }

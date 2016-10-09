@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNet.Identity;
 
 namespace FinancialPortal.Controllers
 {
@@ -120,6 +121,72 @@ namespace FinancialPortal.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult InvitationAcceptance(int id, string inviteeEmailAddress)
+        {
+            ApplicationUser existingAccount = db.Users.Find(inviteeEmailAddress);
+            InvitationAcceptanceViewModel invitationAcceptanceViewModel = new InvitationAcceptanceViewModel
+            {
+                InviteeEmailAddress = inviteeEmailAddress,
+                HasAccount = !(null == existingAccount)
+            };
+            //ViewBag.InviteeEmailAddress = inviteeEmailAddress;
+            //ViewBag.HasAccount = !(null == existingAccount);
+            return View(invitationAcceptanceViewModel);
+        }
+
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public void SendInvitation(string inviteeEmailAddress)
+        //{
+        //    string invitationUrl = Url.Action(ActionName.INVITATION_ACCEPTED, ControllerName.HOUSEHOLDS, new { id = householdId }, protocol: Request.Url.Scheme);
+        //    IdentityMessage notificationMessage = new IdentityMessage
+        //    {
+        //        Destination = inviteeEmailAddress,
+        //        Subject = "You're invited to join a Household Budget",
+        //        Body = "<a href=" + invitationUrl + ">Take a look</a>"
+        //    };
+        //    EmailService emailService = new EmailService();
+        //    emailService.SendAsync(notificationMessage);
+        //}
+
+        // GET: Households/SendInvitation/5
+        public ActionResult Invite(int id)
+        {
+            InvitationViewModel invitationViewModel = new InvitationViewModel { Id = id };
+            return View(invitationViewModel);
+        }
+
+        // POST: Households/SendInvitation/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Invite(InvitationViewModel invitationViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                SendInvitationEmail(invitationViewModel);
+            }
+            return RedirectToAction(ActionName.EDIT, new { id = invitationViewModel.Id });
+        }
+
+        public void SendInvitationEmail(InvitationViewModel invitationViewModel)
+        {
+            string invitationUrl = Url.Action(ActionName.INVITATION_ACCEPTANCE, ControllerName.HOUSEHOLDS, new { id = invitationViewModel.Id, inviteeEmailAddress = invitationViewModel.InviteeEmailAddress }, protocol: Request.Url.Scheme);
+            IdentityMessage notificationMessage = new IdentityMessage
+            {
+                Destination = invitationViewModel.InviteeEmailAddress,
+                Subject = "You've been invited to join a household budget",
+                Body = "<a href=" + invitationUrl + ">Click here if you wish to accept the invitation</a>"
+            };
+            EmailService emailService = new EmailService();
+            emailService.SendAsync(notificationMessage);
+        }
+
+        public ICollection<string> GetAllMemberUserIdsForHousehold(int householdId)
+        {
+            return db.Households.Find(householdId).Members.Select(u => u.Id).ToList();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -129,14 +196,5 @@ namespace FinancialPortal.Controllers
             base.Dispose(disposing);
         }
 
-        public ICollection<string> GetAllMemberUserIdsForHousehold(int householdId)
-        {
-            return db.Households.Find(householdId).Members.Select(u => u.Id).ToList();
-        }
-
-        public ICollection<string> GetAllInviteeUserIdsForHousehold(int householdId)
-        {
-            return db.Households.Find(householdId).Invitees.Select(u => u.Id).ToList();
-        }
     }
 }
