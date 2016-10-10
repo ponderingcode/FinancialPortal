@@ -81,7 +81,7 @@ namespace FinancialPortal.Controllers
             HouseholdViewModel householdViewModel = new HouseholdViewModel { Id = household.Id, Name = household.Name };
             //householdViewModel.HeadOfHousehold = household.HeadOfHousehold.FullName;
             householdViewModel.Members = new MultiSelectList(db.Users, Common.ID, Common.USER_NAME);
-            householdViewModel.SelectedMembers = GetAllMemberUserIdsForHousehold(household.Id).ToList();
+            householdViewModel.SelectedMembers = GetAllMemberIdsForHousehold(household.Id);
             return View(householdViewModel);
         }
 
@@ -90,15 +90,40 @@ namespace FinancialPortal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,HeadOfHousehold")] Household household)
+        public ActionResult Edit(HouseholdViewModel householdViewModel)
         {
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
+            //{
+            //    db.Entry(household).State = EntityState.Modified;
+            //    await db.SaveChangesAsync();
+            //    return RedirectToAction("Index");
+            //}
+            Household householdData = db.Households.Find(householdViewModel.Id);
+            var membersOfHousehold = GetAllMemberIdsForHousehold(householdData.Id);
+
+            if (null == householdViewModel.SelectedMembers)
             {
-                db.Entry(household).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                RemoveAllMembersFromHousehold(householdData.Id);
             }
-            return View(household);
+            else
+            {
+                foreach (var userId in membersOfHousehold)
+                {
+                    if (!householdViewModel.SelectedMembers.Contains(userId))
+                    {
+                        RemoveHouseholdMember(userId, householdData.Id);
+                    }
+                }
+                foreach (var userId in householdViewModel.SelectedMembers)
+                {
+                    if (!IsMemberOfHousehold(userId, householdData.Id))
+                    {
+                        AddHouseholdMember(userId, householdData.Id);
+                    }
+                }
+                return RedirectToAction(ActionName.INDEX);
+            }
+            return View(householdViewModel);
         }
 
         // GET: Households/Delete/5
@@ -189,11 +214,6 @@ namespace FinancialPortal.Controllers
             emailService.SendAsync(notificationMessage);
         }
 
-        public ICollection<string> GetAllMemberUserIdsForHousehold(int householdId)
-        {
-            return db.Households.Find(householdId).Members.Select(u => u.Id).ToList();
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -203,5 +223,58 @@ namespace FinancialPortal.Controllers
             base.Dispose(disposing);
         }
 
+        //
+        // Helper functions
+        //
+
+        public bool RemoveAllMembersFromHousehold(int householdId)
+        {
+            db.Households.Find(householdId).Members.Clear();
+            db.SaveChanges();
+            return 0 == db.Households.Find(householdId).Members.Count;
+        }
+
+        public bool IsMemberOfHousehold(string userId, int householdId)
+        {
+            List<ApplicationUser> householdMembers = db.Households.Find(householdId).Members.ToList();
+            foreach (ApplicationUser user in householdMembers)
+            {
+                if (user.Id == userId)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool AddHouseholdMember(string userId, int householdId)
+        {
+            if (!IsMemberOfHousehold(userId, householdId))
+            {
+                db.Households.Find(householdId).Members.Add(db.Users.Find(userId));
+                db.SaveChanges();
+            }
+            return IsMemberOfHousehold(userId, householdId);
+        }
+
+        public bool RemoveHouseholdMember(string userId, int householdId)
+        {
+            if (IsMemberOfHousehold(userId, householdId))
+            {
+                db.Households.Find(householdId).Members.Remove(db.Users.Find(userId));
+                db.SaveChanges();
+            }
+            return !IsMemberOfHousehold(userId, householdId);
+        }
+
+        public List<ApplicationUser> GetAllMembersOfHousehold(int householdId)
+        {
+            return db.Households.Find(householdId).Members.ToList();
+        }
+
+        public List<string> GetAllMemberIdsForHousehold(int householdId)
+        {
+            return db.Households.Find(householdId).Members.Select(u => u.Id).ToList();
+        }
     }
 }
