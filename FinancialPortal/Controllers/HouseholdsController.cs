@@ -42,9 +42,7 @@ namespace FinancialPortal.Controllers
         public ActionResult Create()
         {
             Household household = new Household();
-            ApplicationUser creator = UserRolesHelper.GetUserById(User.Identity.GetUserId());
-            household.HeadOfHousehold = creator;
-            household.Members.Add(creator);
+            household.HeadOfHousehold = UserRolesHelper.GetUserById(User.Identity.GetUserId()); ;
             return View(household);
         }
 
@@ -58,6 +56,8 @@ namespace FinancialPortal.Controllers
             if (ModelState.IsValid)
             {
                 db.Households.Add(household);
+                await db.SaveChangesAsync();
+                AddHouseholdMember(User.Identity.GetUserId(), household.Id);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -148,6 +148,7 @@ namespace FinancialPortal.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Household household = await db.Households.FindAsync(id);
+            RemoveAllMembersFromHousehold(id);
             db.Households.Remove(household);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
