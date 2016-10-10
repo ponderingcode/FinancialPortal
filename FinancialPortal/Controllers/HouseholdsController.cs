@@ -22,6 +22,12 @@ namespace FinancialPortal.Controllers
             return View(await db.Households.ToListAsync());
         }
 
+        public ActionResult LeaveHousehold(int id)
+        {
+            RemoveHouseholdMember(User.Identity.GetUserId(), id);
+            return RedirectToAction(ActionName.INDEX, ControllerName.HOME);
+        }
+
         // GET: Households/Details/5
         public async Task<ActionResult> Details(int? id)
         {
@@ -57,7 +63,7 @@ namespace FinancialPortal.Controllers
             {
                 db.Households.Add(household);
                 await db.SaveChangesAsync();
-                AddHouseholdMember(User.Identity.GetUserId(), household.Id);
+                AddHouseholdMember(User.Identity.GetUserId(), household.Id, true);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -207,10 +213,16 @@ namespace FinancialPortal.Controllers
             emailService.SendAsync(notificationMessage);
         }
 
-        public bool AddHouseholdMember(string userId, int householdId)
+        public bool AddHouseholdMember(string userId, int householdId, bool headOfHousehold = false)
         {
             if (!IsMemberOfHousehold(userId, householdId))
             {
+                UserRolesHelper.RemoveUserFromRole(userId, HouseholdRoleName.NONE);
+                UserRolesHelper.AddUserToRole(userId, HouseholdRoleName.MEMBER);
+                if (headOfHousehold)
+                {
+                    UserRolesHelper.AddUserToRole(userId, HouseholdRoleName.HEAD_OF_HOUSEHOLD);
+                }
                 db.Households.Find(householdId).Members.Add(db.Users.Find(userId));
                 db.SaveChanges();
             }
@@ -221,6 +233,8 @@ namespace FinancialPortal.Controllers
         {
             if (IsMemberOfHousehold(userId, householdId))
             {
+                UserRolesHelper.RemoveUserFromRole(userId, HouseholdRoleName.MEMBER);
+                UserRolesHelper.AddUserToRole(userId, HouseholdRoleName.NONE);
                 db.Households.Find(householdId).Members.Remove(db.Users.Find(userId));
                 db.SaveChanges();
             }

@@ -23,9 +23,20 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @if (User.IsInRole(HouseholdRoleName.HEAD_OF_HOUSEHOLD))
+                    @if (Request.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("Household Management", "Index", "Households")</li>
+                        if (User.IsInRole(HouseholdRoleName.HEAD_OF_HOUSEHOLD))
+                        {
+                            <li>@Html.ActionLink("Household Management", "Index", "Households")</li>
+                        }
+                        else if (User.IsInRole(HouseholdRoleName.MEMBER))
+                        {
+                            <li>@Html.ActionLink("View Household", "Index", "Households")</li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("Join Household", "JoinHousehold", "Households")</li>
+                        }
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")
