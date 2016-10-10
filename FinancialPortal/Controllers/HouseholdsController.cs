@@ -6,10 +6,10 @@ using System.Web.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Identity;
+using FinancialPortal.Helpers;
 
 namespace FinancialPortal.Controllers
 {
-    [Authorize]
     public class HouseholdsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -17,6 +17,8 @@ namespace FinancialPortal.Controllers
         // GET: Households
         public async Task<ActionResult> Index()
         {
+            bool showCreateNew = (0 == db.Households.ToList().Count);
+            ViewBag.showCreateNew = showCreateNew;
             return View(await db.Households.ToListAsync());
         }
 
@@ -36,10 +38,14 @@ namespace FinancialPortal.Controllers
         }
 
         // GET: Households/Create
-        [Authorize(Roles = ApplicationRole.ADMINISTRATOR)]
+        //[Authorize(Roles = ApplicationRoleName.ADMINISTRATOR)]
         public ActionResult Create()
         {
-            return View();
+            Household household = new Household();
+            ApplicationUser creator = UserRolesHelper.GetUserById(User.Identity.GetUserId());
+            household.HeadOfHousehold = creator;
+            household.Members.Add(creator);
+            return View(household);
         }
 
         // POST: Households/Create
@@ -47,7 +53,7 @@ namespace FinancialPortal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name")] Household household)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,HeadOfHousehold")] Household household)
         {
             if (ModelState.IsValid)
             {
@@ -60,7 +66,7 @@ namespace FinancialPortal.Controllers
         }
 
         // GET: Households/Edit/5
-        [Authorize(Roles = ApplicationRole.ADMINISTRATOR + ", " + HouseholdRole.HEAD_OF_HOUSEHOLD)]
+        [Authorize(Roles = HouseholdRoleName.HEAD_OF_HOUSEHOLD)]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,6 +79,7 @@ namespace FinancialPortal.Controllers
                 return HttpNotFound();
             }
             HouseholdViewModel householdViewModel = new HouseholdViewModel { Id = household.Id, Name = household.Name };
+            //householdViewModel.HeadOfHousehold = household.HeadOfHousehold.FullName;
             householdViewModel.Members = new MultiSelectList(db.Users, Common.ID, Common.USER_NAME);
             householdViewModel.SelectedMembers = GetAllMemberUserIdsForHousehold(household.Id).ToList();
             return View(householdViewModel);
@@ -83,7 +90,7 @@ namespace FinancialPortal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name")] Household household)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,HeadOfHousehold")] Household household)
         {
             if (ModelState.IsValid)
             {
@@ -95,7 +102,7 @@ namespace FinancialPortal.Controllers
         }
 
         // GET: Households/Delete/5
-        [Authorize(Roles = ApplicationRole.ADMINISTRATOR)]
+        [Authorize(Roles = HouseholdRoleName.HEAD_OF_HOUSEHOLD)]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)

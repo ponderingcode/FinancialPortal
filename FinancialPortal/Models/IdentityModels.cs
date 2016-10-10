@@ -15,11 +15,14 @@ namespace FinancialPortal.Models
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
+            //userIdentity.AddClaim(new Claim("HouseholdRoleType", HouseholdRoleType));
             return userIdentity;
         }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string FullName { get; set; }
+        public string HouseholdRoleType { get; set; }
         public int HouseholdId { get; set; }
 
         public virtual ICollection<Budget> Budgets { get; set; }

@@ -156,8 +156,10 @@ namespace FinancialPortal.Controllers
                 {
                     FirstName = model.FirstName,
                     LastName = model.LastName,
+                    FullName = model.FirstName + " " + model.LastName,
                     Email = model.Email,
                     UserName = model.Email,
+                    HouseholdRoleType = HouseholdRoleName.NONE
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -170,7 +172,7 @@ namespace FinancialPortal.Controllers
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    await UserRolesHelper.AddUserToRoleAsync(user.Id, ApplicationRole.STANDARD_USER);
+                    await UserRolesHelper.AddUserToRoleAsync(user.Id, HouseholdRoleName.NONE);
                     //return RedirectToAction("Index", "Home");
                     return RedirectToAction("ConfirmationSent", "Account", new { Email = user.Email });
                 }
@@ -192,6 +194,12 @@ namespace FinancialPortal.Controllers
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
+        }
+
+        [AllowAnonymous]
+        public ActionResult ConfirmationSent()
+        {
+            return View();
         }
 
         //

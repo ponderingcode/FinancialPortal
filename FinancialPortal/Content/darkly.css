@@ -7016,3 +7016,20 @@ a.list-group-item-danger.active:focus {
 option {
     color: black;
 }
+
+.well-footer {
+  background-color: transparent;
+}
+
+.transparent-background {
+    background-color: transparent;
+}
+
+.form-item {
+    padding-bottom: 10px;
+}
+
+label {
+    padding-top: 10px;
+    font-size: 14px;
+}

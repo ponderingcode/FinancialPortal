@@ -45,14 +45,7 @@
     {
     }
 
-    public static class ApplicationRole
-    {
-        public const string ADMINISTRATOR = "Administrator";
-        public const string PRIVILEGED_USER = "PrivilegedUser";
-        public const string STANDARD_USER = "StandardUser";
-    }
-
-    public static class AccountRole
+    public static class AccountRoleName
     {
         public const string ACCOUNT_HOLDER = "AccountHolder";
         public const string JOINT_ACCOUNT_HOLDER = "Joint" + ACCOUNT_HOLDER;
@@ -60,15 +53,16 @@
         public const string SIGNATORY = "Signatory";
     }
 
-    public static class AccountType
+    public static class AccountTypeName
     {
         public const string JOINT_TENANCY = "JointTenancy";
         public const string CONVENIENCE = "Convenience";
     }
 
-    public static class HouseholdRole
+    public static class HouseholdRoleName
     {
         public const string HEAD_OF_HOUSEHOLD = "HeadOfHousehold";
         public const string MEMBER = "Member";
+        public const string NONE = "None";
     }
 }

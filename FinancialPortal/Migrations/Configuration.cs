@@ -17,38 +17,38 @@ namespace FinancialPortal.Migrations
         {
             RoleManager<IdentityRole> applicationRoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
 
-            if (!context.Roles.Any(r => r.Name == ApplicationRole.ADMINISTRATOR))
+            if (!context.Roles.Any(r => r.Name == HouseholdRoleName.HEAD_OF_HOUSEHOLD))
             {
-                applicationRoleManager.Create(new IdentityRole { Name = ApplicationRole.ADMINISTRATOR });
+                applicationRoleManager.Create(new IdentityRole { Name = HouseholdRoleName.HEAD_OF_HOUSEHOLD });
             }
 
-            if (!context.Roles.Any(r => r.Name == ApplicationRole.PRIVILEGED_USER))
+            if (!context.Roles.Any(r => r.Name == HouseholdRoleName.MEMBER))
             {
-                applicationRoleManager.Create(new IdentityRole { Name = ApplicationRole.PRIVILEGED_USER });
+                applicationRoleManager.Create(new IdentityRole { Name = HouseholdRoleName.MEMBER });
             }
 
-            if (!context.Roles.Any(r => r.Name == ApplicationRole.STANDARD_USER))
+            if (!context.Roles.Any(r => r.Name == HouseholdRoleName.NONE))
             {
-                applicationRoleManager.Create(new IdentityRole { Name = ApplicationRole.STANDARD_USER });
+                applicationRoleManager.Create(new IdentityRole { Name = HouseholdRoleName.NONE });
             }
 
             UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
-            if (!context.Users.Any(u => u.Email == "dev@ponderingcode.com"))
+            if (!context.Users.Any(u => u.Email == "samuel_smith@mailinator.com"))
             {
                 userManager.Create(new ApplicationUser
                 {
-                    UserName = "dev@ponderingcode.com",
-                    Email = "dev@ponderingcode.com",
-                    FirstName = "Ryan",
-                    LastName = "Fleming",
-                }, "CoderFoundry");
+                    UserName = "samuel_smith@mailinator.com",
+                    Email = "samuel_smith@mailinator.com",
+                    FirstName = "Samuel",
+                    LastName = "Smith",
+                }, "CoderFoundry1!");
             }
 
-            string administratorUserID = userManager.FindByEmail("dev@ponderingcode.com").Id;
-            userManager.AddToRole(administratorUserID, ApplicationRole.ADMINISTRATOR);
-            userManager.AddToRole(administratorUserID, ApplicationRole.PRIVILEGED_USER);
-            userManager.AddToRole(administratorUserID, ApplicationRole.STANDARD_USER);
+            string administratorUserID = userManager.FindByEmail("samuel_smith@mailinator.com").Id;
+            userManager.AddToRole(administratorUserID, HouseholdRoleName.HEAD_OF_HOUSEHOLD);
+            userManager.AddToRole(administratorUserID, HouseholdRoleName.MEMBER);
+            userManager.AddToRole(administratorUserID, HouseholdRoleName.NONE);
         }
     }
 }

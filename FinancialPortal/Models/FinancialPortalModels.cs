@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FinancialPortal.Models
 {
@@ -34,6 +35,7 @@ namespace FinancialPortal.Models
 
         public int Id { get; set; }
         public string Name { get; set; }
+        public ApplicationUser HeadOfHousehold { get; set; }
         public virtual ICollection<ApplicationUser> Members { get; set; }
     }
 

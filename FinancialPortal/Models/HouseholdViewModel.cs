@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace FinancialPortal.Models
 {
@@ -7,6 +8,8 @@ namespace FinancialPortal.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        [Display(Name = "Head of Household")]
+        public string HeadOfHousehold { get; set; }
         public MultiSelectList Members { get; set; }
         public List<string> SelectedMembers { get; set; }
     }

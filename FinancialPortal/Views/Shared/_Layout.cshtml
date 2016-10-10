@@ -23,13 +23,16 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Households", "Index", "Households")</li>
+                    @if (User.IsInRole(HouseholdRoleName.HEAD_OF_HOUSEHOLD))
+                    {
+                        <li>@Html.ActionLink("Household Management", "Index", "Households")</li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
-    <div class="container body-content" style="padding-top: 50px;">
+    <div class="container body-content" style="padding-top: 55px;">
         @RenderBody()
         <hr />
         <footer>
