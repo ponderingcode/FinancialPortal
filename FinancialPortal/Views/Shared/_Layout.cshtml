@@ -27,7 +27,8 @@
                     {
                         if (User.IsInRole(HouseholdRoleName.HEAD_OF_HOUSEHOLD))
                         {
-                            <li>@Html.ActionLink("Household Management", "Index", "Households")</li>
+                            <li>@Html.ActionLink("Manage Household", "Index", "Households")</li>
+                            <li>@Html.ActionLink("Manage Bank Accounts", "Index", "BankAccounts")</li>
                         }
                         else
                         {

@@ -27,7 +27,7 @@ namespace FinancialPortal.Models
 
         public virtual ICollection<Budget> Budgets { get; set; }
         public virtual ICollection<Household> Households { get; set; }
-        public virtual ICollection<Account> Accounts { get; set; }
+        public virtual ICollection<BankAccount> Accounts { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }
     }
 
@@ -48,7 +48,7 @@ namespace FinancialPortal.Models
         public DbSet<Household> Households { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<CategoryHousehold> CategoryHouseholds { get; set; }
-        public DbSet<Account> Accounts { get; set; }
+        public DbSet<BankAccount> Accounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
     }
 }

@@ -51,8 +51,7 @@ namespace FinancialPortal.Models
         public int HouseholdId { get; set; }
     }
 
-
-    public class Account
+    public class BankAccount
     {
         public int Id { get; set; }
         public int HouseholdId { get; set; }
