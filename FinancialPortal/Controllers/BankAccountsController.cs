@@ -17,7 +17,7 @@ namespace FinancialPortal.Controllers
         // GET: BankAccounts
         public ActionResult Index()
         {
-            return View(db.Accounts.ToList());
+            return View(db.BankAccounts.ToList());
         }
 
         // GET: BankAccounts/Details/5
@@ -27,7 +27,7 @@ namespace FinancialPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BankAccount bankAccount = db.Accounts.Find(id);
+            BankAccount bankAccount = db.BankAccounts.Find(id);
             if (bankAccount == null)
             {
                 return HttpNotFound();
@@ -50,7 +50,7 @@ namespace FinancialPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Accounts.Add(bankAccount);
+                db.BankAccounts.Add(bankAccount);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -65,7 +65,7 @@ namespace FinancialPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BankAccount bankAccount = db.Accounts.Find(id);
+            BankAccount bankAccount = db.BankAccounts.Find(id);
             if (bankAccount == null)
             {
                 return HttpNotFound();
@@ -96,7 +96,7 @@ namespace FinancialPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BankAccount bankAccount = db.Accounts.Find(id);
+            BankAccount bankAccount = db.BankAccounts.Find(id);
             if (bankAccount == null)
             {
                 return HttpNotFound();
@@ -109,8 +109,8 @@ namespace FinancialPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            BankAccount bankAccount = db.Accounts.Find(id);
-            db.Accounts.Remove(bankAccount);
+            BankAccount bankAccount = db.BankAccounts.Find(id);
+            db.BankAccounts.Remove(bankAccount);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

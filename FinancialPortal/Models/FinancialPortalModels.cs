@@ -35,21 +35,62 @@ namespace FinancialPortal.Models
 
         public int Id { get; set; }
         public string Name { get; set; }
+        [Display(Name = "Annual Income")]
+        public decimal IncomeAnnual { get; set; }
+        [Display(Name = "Monthly Income")]
+        public decimal IncomeMonthly
+        {
+            get
+            {
+                return IncomeAnnual / 12;
+            }
+        }
+        [Display(Name = "Paycheck Amount")]
+        public decimal IncomePerPayPeriod
+        {
+            get
+            {
+                return IncomeAnnual / 24;
+            }
+        }
+        [Display(Name = "Weekly Income")]
+        public decimal IncomeWeekly
+        {
+            get
+            {
+                return IncomeAnnual / 52;
+            }
+        }
+        [Display(Name = "Daily Income")]
+        public decimal IncomeDaily
+        {
+            get
+            {
+                return IncomeAnnual / 365;
+            }
+        }
         public ApplicationUser HeadOfHousehold { get; set; }
         public virtual ICollection<ApplicationUser> Members { get; set; }
     }
 
+    //public class Category
+    //{
+    //    public int Id { get; set; }
+    //    public string Name { get; set; }
+    //}
+
     public class Category
     {
         public int Id { get; set; }
+        public int HouseholdId { get; set; }
         public string Name { get; set; }
     }
-
     public class CategoryHousehold
     {
         public int Id { get; set; }
         public int HouseholdId { get; set; }
     }
+
 
     public class BankAccount
     {

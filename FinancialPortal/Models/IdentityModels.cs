@@ -48,7 +48,7 @@ namespace FinancialPortal.Models
         public DbSet<Household> Households { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<CategoryHousehold> CategoryHouseholds { get; set; }
-        public DbSet<BankAccount> Accounts { get; set; }
+        public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
     }
 }
