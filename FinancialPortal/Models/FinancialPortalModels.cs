@@ -63,7 +63,7 @@ namespace FinancialPortal.Models
     public class Transaction
     {
         public int Id { get; set; }
-        public int AccountId { get; set; }
+        public int BankAccountId { get; set; }
         public int CategoryId { get; set; }
         public string EnteredById { get; set; }
         public DateTime Date { get; set; }
