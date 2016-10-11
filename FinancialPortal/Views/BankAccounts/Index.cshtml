@@ -1,19 +1,16 @@
 ﻿@model IEnumerable<FinancialPortal.Models.BankAccount>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Bank Accounts";
 }
 
-<h2>Index</h2>
+<h2>Your Bank Accounts</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Add Bank Account", "Create")
 </p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.HouseholdId)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
@@ -23,14 +20,13 @@
         <th>
             @Html.DisplayNameFor(model => model.ReconcileBalance)
         </th>
-        <th></th>
+        <th>
+            Options
+        </th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.HouseholdId)
-        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Name)
         </td>

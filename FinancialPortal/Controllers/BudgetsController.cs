@@ -10,108 +10,107 @@ using FinancialPortal.Models;
 
 namespace FinancialPortal.Controllers
 {
-    public class BankAccountsController : Controller
+    public class BudgetsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: BankAccounts
+        // GET: Budgets
         public ActionResult Index()
         {
-            return View(db.BankAccounts.ToList());
+            return View(db.Budgets.ToList());
         }
 
-        // GET: BankAccounts/Details/5
+        // GET: Budgets/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BankAccount bankAccount = db.BankAccounts.Find(id);
-            if (bankAccount == null)
+            Budget budget = db.Budgets.Find(id);
+            if (budget == null)
             {
                 return HttpNotFound();
             }
-            return View(bankAccount);
+            return View(budget);
         }
 
-        // GET: BankAccounts/Create
+        // GET: Budgets/Create
         public ActionResult Create()
         {
-            BankAccount bankAccount = new BankAccount();
-            return View(bankAccount);
+            return View();
         }
 
-        // POST: BankAccounts/Create
+        // POST: Budgets/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,HouseholdId,Name,Balance,ReconcileBalance")] BankAccount bankAccount)
+        public ActionResult Create([Bind(Include = "Id,HouseholdId,Name,LimitAmount")] Budget budget)
         {
             if (ModelState.IsValid)
             {
-                db.BankAccounts.Add(bankAccount);
+                db.Budgets.Add(budget);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(bankAccount);
+            return View(budget);
         }
 
-        // GET: BankAccounts/Edit/5
+        // GET: Budgets/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BankAccount bankAccount = db.BankAccounts.Find(id);
-            if (bankAccount == null)
+            Budget budget = db.Budgets.Find(id);
+            if (budget == null)
             {
                 return HttpNotFound();
             }
-            return View(bankAccount);
+            return View(budget);
         }
 
-        // POST: BankAccounts/Edit/5
+        // POST: Budgets/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,HouseholdId,Name,Balance,ReconcileBalance")] BankAccount bankAccount)
+        public ActionResult Edit([Bind(Include = "Id,HouseholdId,Name,LimitAmount")] Budget budget)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(bankAccount).State = EntityState.Modified;
+                db.Entry(budget).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(bankAccount);
+            return View(budget);
         }
 
-        // GET: BankAccounts/Delete/5
+        // GET: Budgets/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BankAccount bankAccount = db.BankAccounts.Find(id);
-            if (bankAccount == null)
+            Budget budget = db.Budgets.Find(id);
+            if (budget == null)
             {
                 return HttpNotFound();
             }
-            return View(bankAccount);
+            return View(budget);
         }
 
-        // POST: BankAccounts/Delete/5
+        // POST: Budgets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            BankAccount bankAccount = db.BankAccounts.Find(id);
-            db.BankAccounts.Remove(bankAccount);
+            Budget budget = db.Budgets.Find(id);
+            db.Budgets.Remove(budget);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -4,6 +4,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FinancialPortal.Models
 {
+    public class BankAccount
+    {
+        public int Id { get; set; }
+        public int HouseholdId { get; set; }
+        public string Name { get; set; }
+        public decimal Balance { get; set; }
+        [Display(Name = "Reconcile Balance")]
+        public decimal ReconcileBalance { get; set; }
+    }
+
     public class Budget
     {
         public Budget()
@@ -14,6 +24,7 @@ namespace FinancialPortal.Models
         public int Id { get; set; }
         public int HouseholdId { get; set; }
         public string Name { get; set; }
+        [Display(Name = "Limit Amount")]
         public decimal LimitAmount { get; set; }
         public virtual ICollection<BudgetItem> BudgetItems { get; set; }
     }
@@ -24,6 +35,25 @@ namespace FinancialPortal.Models
         public int BudgetId { get; set; }
         public int CategoryId { get; set; }
         public decimal Amount { get; set; } 
+    }
+
+    //public class Category
+    //{
+    //    public int Id { get; set; }
+    //    public string Name { get; set; }
+    //}
+
+    public class Category
+    {
+        public int Id { get; set; }
+        public int HouseholdId { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class CategoryHousehold
+    {
+        public int Id { get; set; }
+        public int HouseholdId { get; set; }
     }
 
     public class Household
@@ -71,34 +101,6 @@ namespace FinancialPortal.Models
         }
         public ApplicationUser HeadOfHousehold { get; set; }
         public virtual ICollection<ApplicationUser> Members { get; set; }
-    }
-
-    //public class Category
-    //{
-    //    public int Id { get; set; }
-    //    public string Name { get; set; }
-    //}
-
-    public class Category
-    {
-        public int Id { get; set; }
-        public int HouseholdId { get; set; }
-        public string Name { get; set; }
-    }
-    public class CategoryHousehold
-    {
-        public int Id { get; set; }
-        public int HouseholdId { get; set; }
-    }
-
-
-    public class BankAccount
-    {
-        public int Id { get; set; }
-        public int HouseholdId { get; set; }
-        public string Name { get; set; }
-        public decimal Balance { get; set; }
-        public decimal ReconcileBalance { get; set; }
     }
 
     public class Transaction

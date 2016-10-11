@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>FP | @ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Dependencies/dataTables/DataTablesCustom.css" rel="stylesheet" type="text/css" />
@@ -25,15 +25,12 @@
                 <ul class="nav navbar-nav">
                     @if (Request.IsAuthenticated)
                     {
+                        <li>@Html.ActionLink("Household", "Index", "Households")</li>
                         if (User.IsInRole(HouseholdRoleName.HEAD_OF_HOUSEHOLD))
                         {
-                            <li>@Html.ActionLink("Manage Household", "Index", "Households")</li>
-                            <li>@Html.ActionLink("Manage Bank Accounts", "Index", "BankAccounts")</li>
-                            <li>@Html.ActionLink("Manage Budget Categories", "Index", "Categories")</li>
-                        }
-                        else
-                        {
-                            <li>@Html.ActionLink("Household", "Index", "Households")</li>
+                            <li>@Html.ActionLink("Bank Accounts", "Index", "BankAccounts")</li>
+                            <li>@Html.ActionLink("Budgets", "Index", "Budgets")</li>
+                            <li>@Html.ActionLink("Budget Categories", "Index", "Categories")</li>
                         }
                     }
                 </ul>
