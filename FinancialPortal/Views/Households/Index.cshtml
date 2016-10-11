@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<FinancialPortal.Models.Household>
+@using FinancialPortal.Helpers
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Household Management";
 }
@@ -25,9 +27,22 @@ else
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                @if (UserRolesHelper.IsUserInRole(User.Identity.GetUserId(), HouseholdRoleName.HEAD_OF_HOUSEHOLD))
+                {
+                    <span>
+                        @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                        @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                    </span>
+                }
+                else if (UserRolesHelper.IsUserInRole(User.Identity.GetUserId(), HouseholdRoleName.MEMBER))
+                {
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                }
+                else
+                {
+                    @Html.ActionLink("Join Household", "JoinHousehold", new { id = item.Id })
+                }
             </td>
         </tr>
     }

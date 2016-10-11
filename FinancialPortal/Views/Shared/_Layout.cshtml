@@ -29,13 +29,9 @@
                         {
                             <li>@Html.ActionLink("Household Management", "Index", "Households")</li>
                         }
-                        else if (User.IsInRole(HouseholdRoleName.MEMBER))
-                        {
-                            <li>@Html.ActionLink("View Household", "Index", "Households")</li>
-                        }
                         else
                         {
-                            <li>@Html.ActionLink("Join Household", "JoinHousehold", "Households")</li>
+                            <li>@Html.ActionLink("Household", "Index", "Households")</li>
                         }
                     }
                 </ul>

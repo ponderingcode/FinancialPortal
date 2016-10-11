@@ -22,6 +22,13 @@ namespace FinancialPortal.Controllers
             return View(await db.Households.ToListAsync());
         }
 
+        public ActionResult JoinHousehold(int id)
+        {
+            AddHouseholdMember(User.Identity.GetUserId(), id);
+            return RedirectToAction(ActionName.INDEX, ControllerName.HOUSEHOLDS);
+
+        }
+
         public ActionResult LeaveHousehold(int id)
         {
             RemoveHouseholdMember(User.Identity.GetUserId(), id);
