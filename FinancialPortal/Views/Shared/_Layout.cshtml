@@ -29,6 +29,7 @@
                         {
                             <li>@Html.ActionLink("Manage Household", "Index", "Households")</li>
                             <li>@Html.ActionLink("Manage Bank Accounts", "Index", "BankAccounts")</li>
+                            <li>@Html.ActionLink("Manage Budget Categories", "Index", "Categories")</li>
                         }
                         else
                         {
@@ -44,7 +45,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Financial Portal</p>
         </footer>
     </div>
 
