@@ -71,6 +71,7 @@ namespace FinancialPortal.Controllers
                 db.Households.Add(household);
                 await db.SaveChangesAsync();
                 AddHouseholdMember(User.Identity.GetUserId(), household.Id, true);
+                ApplicationHelper.AssociateAllBankAccountsWithHousehold();
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }

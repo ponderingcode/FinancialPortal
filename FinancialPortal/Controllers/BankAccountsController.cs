@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using FinancialPortal.Models;
+using FinancialPortal.Helpers;
 
 namespace FinancialPortal.Controllers
 {
@@ -51,6 +52,7 @@ namespace FinancialPortal.Controllers
         {
             if (ModelState.IsValid)
             {
+                bankAccount.HouseholdId = ApplicationHelper.HouseholdId;
                 db.BankAccounts.Add(bankAccount);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -83,6 +85,7 @@ namespace FinancialPortal.Controllers
         {
             if (ModelState.IsValid)
             {
+                bankAccount.HouseholdId = ApplicationHelper.HouseholdId;
                 db.Entry(bankAccount).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
