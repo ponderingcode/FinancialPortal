@@ -53,6 +53,70 @@ namespace FinancialPortal.Controllers
             }
         }
 
+        [AllowAnonymous]
+        public async Task<ActionResult> LoginAsHeadOfHousehold()
+        {
+            return await LoginAsDemoUser(0);
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> LoginAsJill()
+        {
+            return await LoginAsDemoUser(1);
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> LoginAsEric()
+        {
+            return await LoginAsDemoUser(2);
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> LoginAsLinda()
+        {
+            return await LoginAsDemoUser(3);
+        }
+
+        [AllowAnonymous]
+        private async Task<ActionResult> LoginAsDemoUser(int userRole)
+        {
+            string returnUrl = "/Home/Index";
+            LoginViewModel model = new LoginViewModel();
+
+            switch (userRole)
+            {
+                case 0:
+                    model.Email = "samuel";
+                    break;
+                case 1:
+                    model.Email = "jill";
+                    break;
+                case 2:
+                    model.Email = "eric";
+                    break;
+                case 3:
+                    model.Email = "linda";
+                    break;
+            }
+
+            model.Email += "_smith@mailinator.com";
+            model.Password = "CoderFoundry1!";
+
+            switch (await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false))
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.RequiresVerification:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View(model);
+            }
+        }
+
         //
         // GET: /Account/Login
         [AllowAnonymous]

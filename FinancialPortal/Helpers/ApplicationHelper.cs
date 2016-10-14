@@ -37,5 +37,17 @@ namespace FinancialPortal.Helpers
                 db.SaveChanges();
             }
         }
+
+        public static void AssociateAllBudgetsWithHousehold()
+        {
+            if (0 < db.Budgets.ToList().Count)
+            {
+                foreach (Budget budget in db.Budgets.ToList())
+                {
+                    budget.HouseholdId = HouseholdId;
+                }
+                db.SaveChanges();
+            }
+        }
     }
 }

@@ -26,7 +26,10 @@
         public const string INVITATION_ACCEPTANCE = "InvitationAcceptance";
         public const string INVITE = "Invite";
         public const string LOGIN = "Login";
-        public const string LOGIN_AS_DEMO_ADMINISTRATOR = "LoginAsDemoAdministrator";
+        public const string LOGIN_AS_HEAD_OF_HOUSEHOLD = "LoginAsHeadOfHousehold";
+        public const string LOGIN_AS_JILL = "LoginAsJill";
+        public const string LOGIN_AS_ERIC = "LoginAsEric";
+        public const string LOGIN_AS_LINDA = "LoginAsLinda";
         public const string LOG_OFF = "LogOff";
         public const string SEND_INVITATION = "SendInvitation";
         public const string SET_PASSWORD = "SetPassword";
