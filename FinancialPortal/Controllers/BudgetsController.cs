@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using FinancialPortal.Models;
+using FinancialPortal.Helpers;
 
 namespace FinancialPortal.Controllers
 {
@@ -17,6 +18,8 @@ namespace FinancialPortal.Controllers
         // GET: Budgets
         public ActionResult Index()
         {
+            bool showCreateNew = (0 == db.Budgets.ToList().Count);
+            ViewBag.showCreateNew = showCreateNew;
             return View(db.Budgets.ToList());
         }
 
@@ -38,7 +41,8 @@ namespace FinancialPortal.Controllers
         // GET: Budgets/Create
         public ActionResult Create()
         {
-            return View();
+            Budget budget = new Budget();
+            return View(budget);
         }
 
         // POST: Budgets/Create
@@ -46,10 +50,11 @@ namespace FinancialPortal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,HouseholdId,Name,LimitAmount")] Budget budget)
+        public ActionResult Create([Bind(Include = "Id,HouseholdId,Name,LimitMonthly")] Budget budget)
         {
             if (ModelState.IsValid)
             {
+                budget.HouseholdId = ApplicationHelper.HouseholdId;
                 db.Budgets.Add(budget);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -78,10 +83,11 @@ namespace FinancialPortal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,HouseholdId,Name,LimitAmount")] Budget budget)
+        public ActionResult Edit([Bind(Include = "Id,HouseholdId,Name,LimitMonthly")] Budget budget)
         {
             if (ModelState.IsValid)
             {
+                budget.HouseholdId = ApplicationHelper.HouseholdId;
                 db.Entry(budget).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

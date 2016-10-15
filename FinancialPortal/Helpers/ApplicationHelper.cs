@@ -18,6 +18,14 @@ namespace FinancialPortal.Helpers
             }
         }
 
+        private static bool BudgetExists
+        {
+            get
+            {
+                return 0 < db.Budgets.ToList().Count;
+            }
+        }
+
         public static int HouseholdId
         {
             get

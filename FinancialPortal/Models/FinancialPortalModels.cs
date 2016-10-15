@@ -24,8 +24,40 @@ namespace FinancialPortal.Models
         public int Id { get; set; }
         public int HouseholdId { get; set; }
         public string Name { get; set; }
-        [Display(Name = "Limit Amount")]
-        public decimal LimitAmount { get; set; }
+        [Display(Name = "Annual Limit")]
+        public decimal LimitAnnual
+        {
+            get
+            {
+                return LimitMonthly * 12;
+            }
+        }
+        [Display(Name = "Monthly Limit")]
+        public decimal LimitMonthly { get; set; }
+        [Display(Name = "Pay Period Limit")]
+        public decimal LimitPerPaycheck
+        {
+            get
+            {
+                return LimitMonthly / 2;
+            }
+        }
+        [Display(Name = "Weekly Limit")]
+        public decimal LimitWeekly
+        {
+            get
+            {
+                return LimitMonthly * 12 / 52;
+            }
+        }
+        [Display(Name = "Daily Limit")]
+        public decimal LimitDaily
+        {
+            get
+            {
+                return LimitMonthly * 12 / 365;
+            }
+        }
         public virtual ICollection<BudgetItem> BudgetItems { get; set; }
     }
 
