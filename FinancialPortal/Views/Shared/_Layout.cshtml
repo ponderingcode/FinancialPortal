@@ -28,9 +28,9 @@
                         <li>@Html.ActionLink("Household", "Index", "Households")</li>
                         if (User.IsInRole(HouseholdRoleName.HEAD_OF_HOUSEHOLD))
                         {
+                            <li>@Html.ActionLink("Transactions", "Index", "Transactions")</li>
                             <li>@Html.ActionLink("Bank Accounts", "Index", "BankAccounts")</li>
-                            <li>@Html.ActionLink("Budgets", "Index", "Budgets")</li>
-                            <li>@Html.ActionLink("Budget Categories", "Index", "Categories")</li>
+                            <li>@Html.ActionLink("Budget", "Index", "Budgets")</li>
                         }
                     }
                 </ul>

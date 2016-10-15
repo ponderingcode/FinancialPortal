@@ -9,8 +9,8 @@ namespace FinancialPortal.Helpers
     public static class ApplicationHelper
     {
         private static ApplicationDbContext db = new ApplicationDbContext();
-
-        private static bool HouseholdExists
+        private static decimal bankAccountsAggregateBalance { get; set; }
+        private static bool householdExists
         {
             get
             {
@@ -18,19 +18,19 @@ namespace FinancialPortal.Helpers
             }
         }
 
-        private static bool BudgetExists
-        {
-            get
-            {
-                return 0 < db.Budgets.ToList().Count;
-            }
-        }
-
         public static int HouseholdId
         {
             get
             {
-                return HouseholdExists ? db.Households.ToList().FirstOrDefault().Id : -1;
+                return householdExists ? db.Households.ToList().FirstOrDefault().Id : -1;
+            }
+        }
+
+        public static int BudgetId
+        {
+            get
+            {
+                return db.Budgets.ToList().FirstOrDefault().Id;
             }
         }
 
@@ -43,6 +43,22 @@ namespace FinancialPortal.Helpers
                     bankAccount.HouseholdId = HouseholdId;
                 }
                 db.SaveChanges();
+            }
+        }
+
+        public static decimal BankAccountsAggregateBalance
+        {
+            get
+            {
+                bankAccountsAggregateBalance = 0;
+                if (0 < db.BankAccounts.ToList().Count)
+                {
+                    foreach (BankAccount bankAccount in db.BankAccounts.ToList())
+                    {
+                        bankAccountsAggregateBalance += bankAccount.Balance;
+                    }
+                }
+                return bankAccountsAggregateBalance;
             }
         }
 

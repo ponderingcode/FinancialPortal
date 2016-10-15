@@ -138,14 +138,19 @@ namespace FinancialPortal.Models
     public class Transaction
     {
         public int Id { get; set; }
+        [Display(Name = "Bank Account")]
         public int BankAccountId { get; set; }
+        [Display(Name = "Category")]
         public int CategoryId { get; set; }
+        [Display(Name = "Entered By")]
         public string EnteredById { get; set; }
         public DateTime Date { get; set; }
         public string Description { get; set; }
         public string Type { get; set; }
         public decimal Amount { get; set; }
+        [Display(Name = "Reconciled Amount")]
         public decimal ReconciledAmount { get; set; }
+        [Display(Name = "Reconciled?")]
         public bool Reconciled { get; set; }
     }
 }

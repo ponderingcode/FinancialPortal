@@ -1,11 +1,12 @@
 ﻿@model IEnumerable<FinancialPortal.Models.BankAccount>
-
+@using FinancialPortal.Helpers
 @{
     ViewBag.Title = "Bank Accounts";
+    ViewBag.AggregateBalance = ApplicationHelper.BankAccountsAggregateBalance;
 }
 
-<h2>Your Bank Accounts</h2>
-
+<h2>Bank Accounts</h2>
+<h4>Aggregate Balance: $@ViewBag.AggregateBalance</h4>
 <p>
     @Html.ActionLink("Add Bank Account", "Create")
 </p>
@@ -25,7 +26,8 @@
         </th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Name)

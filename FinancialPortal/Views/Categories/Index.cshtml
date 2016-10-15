@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<FinancialPortal.Models.Category>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Budget Categories";
 }
 
-<h2>Index</h2>
+<h2>Budget Categories</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -29,5 +29,5 @@
         </td>
     </tr>
 }
-
 </table>
+@Html.ActionLink("Back", "Index", "Budgets")
