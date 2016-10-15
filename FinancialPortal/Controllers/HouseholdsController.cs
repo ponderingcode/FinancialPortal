@@ -213,12 +213,6 @@ namespace FinancialPortal.Controllers
             string senderEmailAddress = UserRolesHelper.GetUserById(User.Identity.GetUserId()).Email;
             string inviteeEmailAddress = UserRolesHelper.GetUserById(userId).Email;
             string invitationUrl = Url.Action(ActionName.INVITATION_ACCEPTANCE, ControllerName.HOUSEHOLDS, new { householdId = householdId, userId = userId, inviteeEmailAddress = inviteeEmailAddress }, protocol: Request.Url.Scheme);
-            //IdentityMessage notificationMessage = new IdentityMessage
-            //{
-            //    Destination = inviteeEmailAddress,
-            //    Subject = "You've been invited to join a household budget",
-            //    Body = "<a href=" + invitationUrl + ">Click here if you wish to accept the invitation</a>"
-            //};
             UserSpecificIdentityMessage notificationMessage = new UserSpecificIdentityMessage
             {
                 Origin = senderEmailAddress,
@@ -227,7 +221,7 @@ namespace FinancialPortal.Controllers
                 Body = "<a href=" + invitationUrl + ">Click here if you wish to accept the invitation</a>"
             };
             EmailService emailService = new EmailService();
-            emailService.SendAsync(notificationMessage);
+            emailService.SendAsSpecificUserAsync(notificationMessage);
         }
 
         public bool AddHouseholdMember(string userId, int householdId, bool headOfHousehold = false)

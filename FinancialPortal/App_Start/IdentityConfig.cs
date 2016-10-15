@@ -20,12 +20,28 @@ namespace FinancialPortal
         {
             // Plug in your email service here to send an email.
             var apiKey = ConfigurationManager.AppSettings["SendGridAPIKey"];
-            //var from = ConfigurationManager.AppSettings["ContactEmail"];
-            var from = (message as UserSpecificIdentityMessage).Origin;
+            var from = ConfigurationManager.AppSettings["ContactEmail"];
 
             SendGridMessage sendGridMessage = new SendGridMessage();
             sendGridMessage.AddTo(message.Destination);
             sendGridMessage.From = new MailAddress(from);
+            sendGridMessage.Subject = message.Subject;
+            sendGridMessage.Html = message.Body;
+
+            var transportWeb = new Web(ConfigurationManager.AppSettings["SendGridAPIKey"]);
+            transportWeb.DeliverAsync(sendGridMessage);
+
+            return Task.FromResult(0);
+        }
+
+        public Task SendAsSpecificUserAsync(UserSpecificIdentityMessage message)
+        {
+            // Plug in your email service here to send an email.
+            var apiKey = ConfigurationManager.AppSettings["SendGridAPIKey"];
+
+            SendGridMessage sendGridMessage = new SendGridMessage();
+            sendGridMessage.AddTo(message.Destination);
+            sendGridMessage.From = new MailAddress(message.Origin);
             sendGridMessage.Subject = message.Subject;
             sendGridMessage.Html = message.Body;
 
