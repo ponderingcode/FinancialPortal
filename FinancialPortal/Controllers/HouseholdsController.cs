@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Identity;
 using FinancialPortal.Helpers;
+using FinancialPortal.Identity;
 
 namespace FinancialPortal.Controllers
 {
@@ -209,10 +210,18 @@ namespace FinancialPortal.Controllers
 
         public void InviteUserToJoinHousehold(string userId, int householdId)
         {
+            string senderEmailAddress = UserRolesHelper.GetUserById(User.Identity.GetUserId()).Email;
             string inviteeEmailAddress = UserRolesHelper.GetUserById(userId).Email;
             string invitationUrl = Url.Action(ActionName.INVITATION_ACCEPTANCE, ControllerName.HOUSEHOLDS, new { householdId = householdId, userId = userId, inviteeEmailAddress = inviteeEmailAddress }, protocol: Request.Url.Scheme);
-            IdentityMessage notificationMessage = new IdentityMessage
+            //IdentityMessage notificationMessage = new IdentityMessage
+            //{
+            //    Destination = inviteeEmailAddress,
+            //    Subject = "You've been invited to join a household budget",
+            //    Body = "<a href=" + invitationUrl + ">Click here if you wish to accept the invitation</a>"
+            //};
+            UserSpecificIdentityMessage notificationMessage = new UserSpecificIdentityMessage
             {
+                Origin = senderEmailAddress,
                 Destination = inviteeEmailAddress,
                 Subject = "You've been invited to join a household budget",
                 Body = "<a href=" + invitationUrl + ">Click here if you wish to accept the invitation</a>"

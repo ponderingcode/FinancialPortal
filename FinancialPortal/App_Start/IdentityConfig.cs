@@ -10,6 +10,7 @@ using System.Configuration;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using FinancialPortal.Identity;
 
 namespace FinancialPortal
 {
@@ -19,7 +20,8 @@ namespace FinancialPortal
         {
             // Plug in your email service here to send an email.
             var apiKey = ConfigurationManager.AppSettings["SendGridAPIKey"];
-            var from = ConfigurationManager.AppSettings["ContactEmail"];
+            //var from = ConfigurationManager.AppSettings["ContactEmail"];
+            var from = (message as UserSpecificIdentityMessage).Origin;
 
             SendGridMessage sendGridMessage = new SendGridMessage();
             sendGridMessage.AddTo(message.Destination);
