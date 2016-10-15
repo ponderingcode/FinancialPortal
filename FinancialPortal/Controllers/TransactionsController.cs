@@ -38,7 +38,13 @@ namespace FinancialPortal.Controllers
         // GET: Transactions/Create
         public ActionResult Create()
         {
-            return View();
+            TransactionViewModel viewModel = new TransactionViewModel
+            {
+                BankAccounts = new SelectList(db.BankAccounts, Common.ID, Common.NAME),
+                Categories = new SelectList(db.Categories, Common.ID, Common.NAME)
+            };
+
+            return View(viewModel);
         }
 
         // POST: Transactions/Create

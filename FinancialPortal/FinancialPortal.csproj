@@ -207,6 +207,7 @@
     <Compile Include="Models\InvitationAcceptanceViewModel.cs" />
     <Compile Include="Models\InvitationViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\TransactionViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

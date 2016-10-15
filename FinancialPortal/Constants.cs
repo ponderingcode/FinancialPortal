@@ -6,6 +6,7 @@
         public const string ID = "Id";
         public const string TITLE = "Title";
         public const string DESCRIPTION = "Description";
+        public const string NAME = "Name";
         public const string UPDATED = "Updated";
         public const string USER_NAME = "UserName";
         public const string MULTIPART_FORM_DATA = "Multipart/form-data";
