@@ -69,4 +69,10 @@
         public const string MEMBER = "Member";
         public const string NONE = "None";
     }
+
+    public static class TransactionTypeName
+    {
+        public const string PAID = "Paid";
+        public const string RECEIVED = "Received";
+    }
 }

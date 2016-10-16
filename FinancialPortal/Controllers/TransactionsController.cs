@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using FinancialPortal.Models;
+using Microsoft.AspNet.Identity;
 
 namespace FinancialPortal.Controllers
 {
@@ -52,8 +53,43 @@ namespace FinancialPortal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,BankAccountId,CategoryId,EnteredById,Date,Description,Type,Amount,ReconciledAmount,Reconciled")] Transaction transaction)
+        public ActionResult Create(TransactionViewModel viewModel)
         {
+            string userId = User.Identity.GetUserId();
+            BankAccount bankAccount = db.BankAccounts.Find(viewModel.SelectedBankAccount);
+            Category category = db.Categories.Find(viewModel.SelectedCategory);
+            Transaction transaction = new Transaction
+            {
+                Id = viewModel.Id,
+                Amount = viewModel.Amount,
+                BankAccountId = bankAccount.Id,
+                BankAccount = bankAccount,
+                CategoryId = category.Id,
+                Category = category,
+                Date = viewModel.Date,
+                Description = viewModel.Description,
+                EnteredById = userId,
+                EnteredBy = db.Users.Find(userId),
+                Reconciled = viewModel.Reconciled,
+                ReconciledAmount = viewModel.ReconciledAmount,
+                Type = viewModel.Type
+            };
+
+
+            if (TransactionTypeName.RECEIVED == transaction.Type)
+            {
+                bankAccount.Balance += transaction.Amount;
+            }
+            else
+            {
+                bankAccount.Balance -= transaction.Amount;
+            }
+
+            if (0 > bankAccount.Balance)
+            {
+                transaction.Misc = "OVERDRAFT";
+            }
+
             if (ModelState.IsValid)
             {
                 db.Transactions.Add(transaction);
@@ -61,7 +97,7 @@ namespace FinancialPortal.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(transaction);
+            return View(viewModel);
         }
 
         // GET: Transactions/Edit/5

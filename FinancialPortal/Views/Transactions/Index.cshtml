@@ -12,13 +12,13 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.BankAccountId)
+            @Html.DisplayNameFor(model => model.BankAccount)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CategoryId)
+            @Html.DisplayNameFor(model => model.Category)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EnteredById)
+            @Html.DisplayNameFor(model => model.EnteredBy)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Date)
@@ -38,19 +38,24 @@
         <th>
             @Html.DisplayNameFor(model => model.Reconciled)
         </th>
-        <th></th>
+        <th>
+            @Html.DisplayNameFor(model => model.Misc)
+        </th>
+        <th>
+            Options
+        </th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.BankAccountId)
+            @Html.DisplayFor(modelItem => item.BankAccount.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.CategoryId)
+            @Html.DisplayFor(modelItem => item.Category.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.EnteredById)
+            @Html.DisplayFor(modelItem => item.EnteredBy.FullName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Date)
@@ -69,6 +74,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Reconciled)
+        </td>
+        <td style="color:red;">
+            @Html.DisplayFor(modelItem => item.Misc)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
