@@ -17,6 +17,13 @@ namespace FinancialPortal.Helpers
                 return 0 < db.Households.ToList().Count;
             }
         }
+        private static bool budgetExists
+        {
+            get
+            {
+                return 0 < db.Budgets.ToList().Count;
+            }
+        }
 
         public static int HouseholdId
         {
@@ -71,6 +78,35 @@ namespace FinancialPortal.Helpers
                     budget.HouseholdId = HouseholdId;
                 }
                 db.SaveChanges();
+            }
+        }
+
+        public static decimal BudgetAmountInitial
+        {
+            get
+            {
+                return budgetExists ? db.Budgets.ToList().FirstOrDefault().LimitMonthly : 0;
+            }
+        }
+
+        public static decimal BudgetAmountRemaining
+        {
+            get
+            {
+                return budgetExists ? db.Budgets.ToList().FirstOrDefault().LimitMonthly - AggregateExpensesMonthly : 0;
+            }
+        }
+
+        public static decimal AggregateExpensesMonthly
+        {
+            get
+            {
+                decimal aggregateExpenses = 0;
+                foreach (Transaction transaction in db.Transactions.ToList())
+                {
+                    aggregateExpenses += transaction.Amount;
+                }
+                return aggregateExpenses;
             }
         }
     }

@@ -5,6 +5,11 @@
 }
 
 <h2>Transactions</h2>
+<ul>
+    <li><h4>Initial Monthly Budget: $@ViewBag.BudgetAmountInitial</h4></li>
+    <li><h4>Current Expenses: $@ViewBag.AggregateExpenses</h4></li>
+    <li><h4>Remaining Monthly Budget: $@ViewBag.BudgetAmountRemaining</h4></li>
+</ul>
 
 <p>
     @Html.ActionLink("Create New", "Create")

@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using FinancialPortal.Models;
 using Microsoft.AspNet.Identity;
+using FinancialPortal.Helpers;
 
 namespace FinancialPortal.Controllers
 {
@@ -18,6 +19,9 @@ namespace FinancialPortal.Controllers
         // GET: Transactions
         public ActionResult Index()
         {
+            ViewBag.AggregateExpenses = ApplicationHelper.AggregateExpensesMonthly;
+            ViewBag.BudgetAmountInitial = ApplicationHelper.BudgetAmountInitial;
+            ViewBag.BudgetAmountRemaining = ApplicationHelper.BudgetAmountRemaining;
             return View(db.Transactions.ToList());
         }
 
