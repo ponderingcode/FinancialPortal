@@ -20,4 +20,5 @@ namespace FinancialPortal.Models
         [Display(Name = "Reconciled Amount")]
         public decimal ReconciledAmount { get; set; }
         public bool Reconciled { get; set; }
+    }
 }
