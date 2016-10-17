@@ -10,6 +10,8 @@ namespace FinancialPortal.Models
         public string Name { get; set; }
         [Display(Name = "Head of Household")]
         public string HeadOfHousehold { get; set; }
+        [Display(Name = "Annual Income")]
+        public decimal IncomeAnnual { get; set; }
         public MultiSelectList Members { get; set; }
         public List<string> SelectedMembers { get; set; }
     }

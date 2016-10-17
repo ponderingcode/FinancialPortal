@@ -96,6 +96,7 @@ namespace FinancialPortal.Controllers
             HouseholdViewModel householdViewModel = new HouseholdViewModel { Id = household.Id, Name = household.Name };
             householdViewModel.Members = new MultiSelectList(db.Users, Common.ID, Common.USER_NAME);
             householdViewModel.SelectedMembers = GetAllMemberIdsForHousehold(household.Id);
+            householdViewModel.IncomeAnnual = db.Households.Find(householdViewModel.Id).IncomeAnnual;
             return View(householdViewModel);
         }
 
@@ -106,29 +107,35 @@ namespace FinancialPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(HouseholdViewModel householdViewModel)
         {
-            Household householdData = db.Households.Find(householdViewModel.Id);
-            var membersOfHousehold = GetAllMemberIdsForHousehold(householdData.Id);
+            if (ModelState.IsValid)
+            {
+                Household householdData = db.Households.Find(householdViewModel.Id);
+                householdData.Name = householdViewModel.Name;
+                householdData.IncomeAnnual = householdViewModel.IncomeAnnual;
+                var membersOfHousehold = GetAllMemberIdsForHousehold(householdData.Id);
 
-            if (null == householdViewModel.SelectedMembers)
-            {
-                RemoveAllMembersFromHousehold(householdData.Id);
-            }
-            else
-            {
-                foreach (var userId in membersOfHousehold)
+                if (null == householdViewModel.SelectedMembers)
                 {
-                    if (!householdViewModel.SelectedMembers.Contains(userId))
+                    RemoveAllMembersFromHousehold(householdData.Id);
+                }
+                else
+                {
+                    foreach (var userId in membersOfHousehold)
                     {
-                        RemoveHouseholdMember(userId, householdData.Id);
+                        if (!householdViewModel.SelectedMembers.Contains(userId))
+                        {
+                            RemoveHouseholdMember(userId, householdData.Id);
+                        }
+                    }
+                    foreach (var userId in householdViewModel.SelectedMembers)
+                    {
+                        if (!IsMemberOfHousehold(userId, householdData.Id))
+                        {
+                            InviteUserToJoinHousehold(userId, householdData.Id);
+                        }
                     }
                 }
-                foreach (var userId in householdViewModel.SelectedMembers)
-                {
-                    if (!IsMemberOfHousehold(userId, householdData.Id))
-                    {
-                        InviteUserToJoinHousehold(userId, householdData.Id);
-                    }
-                }
+                db.SaveChanges();
                 return RedirectToAction(ActionName.INDEX);
             }
             return View(householdViewModel);

@@ -40,8 +40,8 @@
     {
         public const string ACCOUNT = "Account";
         public const string HOME = "Home";
-        public const string MANAGE = "Manage";
         public const string HOUSEHOLDS = "Households";
+        public const string MANAGE = "Manage";
         public const string ROLES = "Roles";
     }
 
