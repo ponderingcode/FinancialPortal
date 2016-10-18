@@ -39,15 +39,21 @@ namespace FinancialPortal.Controllers
         // GET: Households/Details/5
         public async Task<ActionResult> Details(int? id)
         {
+            List<ApplicationUser> householdMembers = new List<ApplicationUser>();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else
+            {
+                householdMembers = GetAllMembersOfHousehold((int)id);
             }
             Household household = await db.Households.FindAsync(id);
             if (household == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.HouseholdMembers = householdMembers;
             return View(household);
         }
 

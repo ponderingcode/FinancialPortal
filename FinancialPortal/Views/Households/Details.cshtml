@@ -1,14 +1,20 @@
 ﻿@model FinancialPortal.Models.Household
 @using FinancialPortal.Helpers
 @using Microsoft.AspNet.Identity
+@using FinancialPortal.Models;
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Household Details";
 }
-
-<h2>Details</h2>
+<script src="~/Dependencies/jQuery/jquery-2.2.4.min.js" type="text/javascript"></script>
+<script src="~/Dependencies/dataTables/DataTables-1.10.12.min.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function() {
+        $('#tblMembers').DataTable();
+    });
+</script>
+<h2>Household Details</h2>
 
 <div>
-    <h4>Household</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -18,12 +24,49 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.HeadOfHousehold)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HeadOfHousehold.FullName)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.IncomeAnnual)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.IncomeAnnual)
         </dd>
     </dl>
+</div>
+<hr />
+<div>
+    <h4>Members</h4>
+    <div>
+        <table id="tblMembers" class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Last Name
+                    </th>
+                    <th>
+                        First Name
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ApplicationUser member in ViewBag.HouseholdMembers)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => member.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => member.FirstName)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 <p>
     @Html.ActionLink("Back", "Index")

@@ -104,7 +104,7 @@ namespace FinancialPortal.Helpers
                 decimal aggregateExpenses = 0;
                 foreach (Transaction transaction in db.Transactions.ToList())
                 {
-                    aggregateExpenses += transaction.Amount;
+                    aggregateExpenses += !transaction.Reconciled ? transaction.Amount : transaction.ReconciledAmount;
                 }
                 return aggregateExpenses;
             }

@@ -131,6 +131,7 @@ namespace FinancialPortal.Models
                 return IncomeAnnual / 365;
             }
         }
+        [Display(Name = "Head of Household")]
         public ApplicationUser HeadOfHousehold { get; set; }
         public virtual ICollection<ApplicationUser> Members { get; set; }
     }
